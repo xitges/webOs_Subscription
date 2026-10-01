@@ -17,7 +17,8 @@ router = APIRouter()
 @router.get("/subscribers")
 def get_subscribers():
     # subscribers 리스트 전체를 반환
-    pass
+    return subscribers
+
 
 # =============================================================================
 # TODO [요구사항 #2]: GET /api/subscribers/{user_id}/devices
@@ -35,6 +36,11 @@ def get_subscribers():
 @router.get("/subscribers/{user_id}/devices")
 def get_devices_by_user(user_id: str):
     # 1. subscribers 리스트에서 user_id가 존재하는지 확인
+    exists = any(s["userId"] == user_id for s in subscribers)
+
     # 2. 존재하면 devices_by_user에서 해당 사용자의 디바이스 목록 반환
+    if exists:
+        return devices_by_user.get(user_id, [])
+
     # 3. 존재하지 않으면 HTTPException(status_code=404) 발생
-    pass
+    raise HTTPException(status_code=404, detail=f"User '{user_id}' not found")
