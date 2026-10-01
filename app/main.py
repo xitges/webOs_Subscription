@@ -16,7 +16,7 @@ app.include_router(devices.router, prefix="/api", tags=["Devices"])
 
 @app.get("/", response_class=HTMLResponse)
 def root(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="index.html", context={})
 
 
 @app.get("/health")

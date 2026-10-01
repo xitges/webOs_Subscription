@@ -24,7 +24,13 @@ function badgeClass(value) {
     // On, Cleaning             → "badge status-on"       (노랑)
     // Off                      → "badge status-off"      (연회색)
     // 그 외                     → "badge"
-    return "badge";
+    const classes = {
+        active: "status-active", online: "status-active", normal: "status-active",
+        paused: "status-paused", standby: "status-paused",
+        expired: "status-expired", error: "status-expired", warning: "status-expired",
+        offline: "status-offline", on: "status-on", cleaning: "status-on", off: "status-off",
+    };
+    return Object.hasOwn(classes, v) ? `badge ${classes[v]}` : "badge";
 }
 
 
