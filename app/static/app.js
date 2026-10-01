@@ -168,6 +168,7 @@ async function selectSubscriber(userId) {
  
     // 6. 가전 테이블 렌더링
     renderDevices();
+}
     // 가전 패널에 안내 메시지만 표시하고 테이블은 숨김
 function showDeviceMessage(message) {
     const emptyEl = document.getElementById("device-empty");
