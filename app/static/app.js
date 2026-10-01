@@ -202,8 +202,8 @@ function renderUsageChart(trend) {
 // =============================================================================
 function bindEvents() {
     // [요구사항 #1] 완료 후 아래 주석을 해제하세요
-    // document.getElementById("subscriber-search").addEventListener("input", renderSubscribers);
-    // document.getElementById("subscriber-status-filter").addEventListener("change", renderSubscribers);
+    document.getElementById("subscriber-search").addEventListener("input", renderSubscribers);
+    document.getElementById("subscriber-status-filter").addEventListener("change", renderSubscribers);
 
     // [요구사항 #2] 완료 후 아래 주석을 해제하세요
     // document.getElementById("device-search").addEventListener("input", renderDevices);
@@ -213,4 +213,4 @@ function bindEvents() {
 bindEvents();
 
 // [요구사항 #1] 완료 후 아래 주석을 해제하세요
-// fetchSubscribers();
+fetchSubscribers();
