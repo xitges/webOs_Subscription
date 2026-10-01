@@ -36,9 +36,23 @@ function badgeClass(value) {
 //   subscribers 변수에 저장하고 renderSubscribers()를 호출하세요.
 //
 async function fetchSubscribers() {
-    // 1. GET /api/subscribers 호출
-    // 2. 응답을 subscribers 변수에 저장
+    try {
+        // 1. GET /api/subscribers 호출
+        const res = await fetch("/api/subscribers");
+        if (!res.ok) {
+            throw new Error(`HTTP ${res.status}`);
+        }
+ 
+        // 2. 응답을 subscribers 변수에 저장 (BE가 아직 null을 주는 경우 대비)
+        const data = await res.json();
+        subscribers = Array.isArray(data) ? data : [];
+    } catch (err) {
+        console.error("Failed to fetch subscribers:", err);
+        subscribers = [];
+    }
+ 
     // 3. renderSubscribers() 호출
+    renderSubscribers();
 }
 
 // TODO [요구사항 #1-B]: subscribers 배열을 테이블에 렌더링하세요.
@@ -56,8 +70,59 @@ function renderSubscribers() {
     //    - 표시 컬럼: userId, name, plan, status, deviceCount
     //    - 각 행 클릭 시 selectSubscriber(userId) 호출
     //    - 선택된 행(selectedUserId)에 "selected" 클래스 추가
-
-    // 여기에 구현하세요
+ 
+    // 2. 검색어(부분 문자열) + 상태 필터를 동시에 만족하는 사용자만 남김
+    const filtered = subscribers.filter((u) => {
+        const matchesSearch = [u.name, u.plan, u.status, u.userId]
+            .some((field) => String(field ?? "").toLowerCase().includes(search));
+        const matchesStatus = !statusFilter || u.status === statusFilter;
+        return matchesSearch && matchesStatus;
+    });
+ 
+    // 3. 기존 행을 지우고 다시 렌더링
+    tbody.innerHTML = "";
+ 
+    if (filtered.length === 0) {
+        const tr = document.createElement("tr");
+        const td = document.createElement("td");
+        td.colSpan = 5;
+        td.className = "empty-msg";
+        td.textContent = subscribers.length === 0
+            ? "No subscribers found."
+            : "No subscribers matched.";
+        tr.appendChild(td);
+        tbody.appendChild(tr);
+        return;
+    }
+ 
+    filtered.forEach((u) => {
+        const tr = document.createElement("tr");
+        tr.className = "clickable";
+        if (u.userId === selectedUserId) {
+            tr.classList.add("selected");
+        }
+ 
+        // 텍스트는 textContent로 넣어 HTML 주입을 방지
+        [u.userId, u.name, u.plan].forEach((value) => {
+            const td = document.createElement("td");
+            td.textContent = value;
+            tr.appendChild(td);
+        });
+ 
+        const statusTd = document.createElement("td");
+        const badge = document.createElement("span");
+        badge.className = badgeClass(u.status);   // 요구사항 #3 완료 시 색상 자동 적용
+        badge.textContent = u.status;
+        statusTd.appendChild(badge);
+        tr.appendChild(statusTd);
+ 
+        const countTd = document.createElement("td");
+        countTd.textContent = u.deviceCount;
+        tr.appendChild(countTd);
+ 
+        tr.addEventListener("click", () => selectSubscriber(u.userId));
+        tbody.appendChild(tr);
+    });
 }
 
 
