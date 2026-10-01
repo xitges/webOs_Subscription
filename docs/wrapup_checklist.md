@@ -12,8 +12,7 @@
 |------|------|
 | 팀 이름 / 조 | |
 | 팀원 (역할) | PM: 홍준영 / BE: 우승훈 / FE: 조윤상 / TE: 정희서|
-| GitHub 저장소 URL | https://github.com/byoung-ho/devops_docs/blob/main/wrapup_checklist.md |
-| Render 배포 URL | |
+| GitHub 저장소 URL | https://github.com/xitges/webOs_Suscription |
 | 작성일 | 2026.10.01|
 
 ---
