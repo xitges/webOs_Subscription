@@ -19,6 +19,11 @@ router = APIRouter()
 @router.get("/devices/{device_id}/usage")
 def get_device_usage(device_id: str):
     # 1. usage_by_device에서 device_id로 조회
+    usage = usage_by_device.get(device_id)
+
     # 2. 존재하면 사용 현황 데이터 반환
+    if usage is not None:
+        return usage
+
     # 3. 존재하지 않으면 HTTPException(status_code=404) 발생
-    pass
+    raise HTTPException(status_code=404, detail=f"Device '{device_id}' not found")
