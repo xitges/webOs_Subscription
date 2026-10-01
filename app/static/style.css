@@ -152,7 +152,7 @@ tr.selected {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .usage-detail {
